@@ -1,5 +1,7 @@
 # Gaussian Splatting용 COLMAP 데이터셋 생성기
 
+[English](README_EN.md) | **한국어**
+
 사진 또는 동영상 프레임 폴더로부터 [3D Gaussian Splatting](https://github.com/graphdeco-inria/gaussian-splatting)에서 바로 사용할 수 있는 COLMAP 데이터셋을 생성합니다.
 
 생성되는 데이터셋 구조는 다음과 같습니다.
