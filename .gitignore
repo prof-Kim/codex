@@ -1,0 +1,14 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Generated COLMAP datasets and databases
+dataset/
+distorted/
+*.db
+
+# Source imagery is usually too large for Git
+source_images/
+frames/
+
