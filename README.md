@@ -1,69 +1,70 @@
 # COLMAP dataset builder for Gaussian Splatting
 
-?ъ쭊 ?먮뒗 ?숈쁺???꾨젅?꾩쑝濡쒕???[3D Gaussian Splatting](https://github.com/graphdeco-inria/gaussian-splatting)???쎌쓣 ???덈뒗 COLMAP ?곗씠?곗뀑??留뚮벊?덈떎.
+사진 또는 동영상 프레임으로부터 [3D Gaussian Splatting](https://github.com/graphdeco-inria/gaussian-splatting)이 읽을 수 있는 COLMAP 데이터셋을 만듭니다.
 
-?앹꽦?섎뒗 ?듭떖 援ъ“???ㅼ쓬怨?媛숈뒿?덈떎.
+생성되는 핵심 구조는 다음과 같습니다.
 
 ```text
 dataset/
-?쒋?? images/                 # undistorted images
-?붴?? sparse/
-    ?붴?? 0/
-        ?쒋?? cameras.bin
-        ?쒋?? images.bin
-        ?붴?? points3D.bin
+├── images/                 # undistorted images
+└── sparse/
+    └── 0/
+        ├── cameras.bin
+        ├── images.bin
+        └── points3D.bin
 ```
 
-## 以鍮?
-- Python 3.9 ?댁긽
-- [COLMAP](https://colmap.github.io/install.html) 3.8 ?댁긽
-- ?쒕줈 60~80% ?뺣룄 寃뱀튂怨??붾뱾由쇱씠 ?곸? ?대?吏 沅뚯옣
+## 준비
 
-COLMAP ?ㅽ뻾 ?뚯씪??`PATH`???녿떎硫?`--colmap-exe`濡??꾩껜 寃쎈줈瑜?吏?뺥븷 ???덉뒿?덈떎.
+- Python 3.9 이상
+- [COLMAP](https://colmap.github.io/install.html) 3.8 이상
+- 서로 60~80% 정도 겹치고 흔들림이 적은 이미지 권장
 
-## ?ㅽ뻾
+COLMAP 실행 파일이 `PATH`에 없다면 `--colmap-exe`로 전체 경로를 지정할 수 있습니다.
 
-?쇰컲 ?ъ쭊 ?명듃:
+## 실행
+
+일반 사진 세트:
 
 ```bash
 python colmap_pipeline.py ./source_images ./dataset
 ```
 
-珥ъ쁺 ?쒖꽌?濡?異붿텧???숈쁺???꾨젅??
+촬영 순서대로 추출한 동영상 프레임:
 
 ```bash
 python colmap_pipeline.py ./frames ./dataset --matcher sequential
 ```
 
-Windows?먯꽌 COLMAP 寃쎈줈瑜?吏곸젒 吏?뺥븯????
+Windows에서 COLMAP 경로를 직접 지정하는 예:
 
 ```powershell
 py colmap_pipeline.py .\source_images .\dataset `
   --colmap-exe "C:\Program Files\COLMAP\COLMAP.bat"
 ```
 
-CUDA瑜??ъ슜?????녿뒗 ?섍꼍:
+CUDA를 사용할 수 없는 환경:
 
 ```bash
 python colmap_pipeline.py ./source_images ./dataset --use-cpu
 ```
 
-湲곗〈 異쒕젰 ?대뜑瑜?吏?곌퀬 ?ㅼ떆 泥섎━?섎젮硫?`--overwrite`瑜?異붽??⑸땲?? ?ㅼ젣 ?ㅽ뻾 ?놁씠 COLMAP 紐낅졊留??뺤씤?섎젮硫?`--dry-run`???ъ슜?⑸땲??
+기존 출력 폴더를 지우고 다시 처리하려면 `--overwrite`를 추가합니다. 실제 실행 없이 COLMAP 명령만 확인하려면 `--dry-run`을 사용합니다.
 
-## ?대?吏 珥ъ쁺 ??
-- ?쇱궗泥?二쇱쐞瑜?泥쒖쿇???대룞?섎ŉ 紐⑤뱺 諛⑺뼢?먯꽌 珥ъ쁺?⑸땲??
-- 以? 珥덉젏 嫄곕━, ?댁긽?꾨? 珥ъ쁺 以?諛붽씀吏 ?딆뒿?덈떎.
-- 諛섏궗泥? ?щ챸泥? ?吏곸씠???щ엺怨?媛뺥븳 紐⑥뀡 釉붾윭瑜??쇳빀?덈떎.
-- ?섎굹??移대찓???뚯쫰濡?珥ъ쁺??寃쎌슦 湲곕낯 ?ㅼ젙???좎??⑸땲??
-- ?щ윭 移대찓?쇨? ?욎??쇰㈃ `--multiple-cameras`瑜??ъ슜?⑸땲??
+## 이미지 촬영 팁
 
-## 寃곌낵 ?뺤씤
+- 피사체 주위를 천천히 이동하며 모든 방향에서 촬영합니다.
+- 줌, 초점 거리, 해상도를 촬영 중 바꾸지 않습니다.
+- 반사체, 투명체, 움직이는 사람과 강한 모션 블러를 피합니다.
+- 하나의 카메라/렌즈로 촬영한 경우 기본 설정을 유지합니다.
+- 여러 카메라가 섞였으면 `--multiple-cameras`를 사용합니다.
 
-?깃났 ??`dataset/images`? `dataset/sparse/0`??Gaussian Splatting ?곗씠??寃쎈줈濡??꾨떖?⑸땲?? ?깅줉??移대찓???섍? ?먮낯 ?대?吏 ?섎낫???ш쾶 ?곸쑝硫??대?吏 寃뱀묠, 釉붾윭, 諛섎났 臾대뒳 ?щ?瑜?癒쇱? ?뺤씤?섏꽭??
+## 결과 확인
 
-?꾩껜 ?듭뀡:
+성공 후 `dataset/images`와 `dataset/sparse/0`을 Gaussian Splatting 데이터 경로로 전달합니다. 등록된 카메라 수가 원본 이미지 수보다 크게 적으면 이미지 겹침, 블러, 반복 무늬 여부를 먼저 확인하세요.
+
+전체 옵션:
 
 ```bash
 python colmap_pipeline.py --help
 ```
-
